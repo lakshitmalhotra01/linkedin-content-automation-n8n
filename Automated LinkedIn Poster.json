@@ -1,0 +1,302 @@
+{
+  "name": "Automated LinkedIn Poster",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6edb8115-e0c4-420c-836f-218445a61f90",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bVAlGPSFbJRDd4UoO5jeB8VZCMEZ_6hw97aDI_7hRUo",
+          "mode": "list",
+          "cachedResultName": "LinkedIn_Content_",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bVAlGPSFbJRDd4UoO5jeB8VZCMEZ_6hw97aDI_7hRUo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bVAlGPSFbJRDd4UoO5jeB8VZCMEZ_6hw97aDI_7hRUo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0b460bae-9895-439f-8c0b-24186b835031",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kpM7T8emokCXbxNq",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.duckduckgo.com/?q={{$json[\"Topic\"]}}&format=json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        432,
+        0
+      ],
+      "id": "a2275711-7110-49e7-a2d3-70945bb59f9c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1c1a896e-702e-481e-a001-474a8e9e95f3",
+              "name": "linkedin_post",
+              "value": "=🚀 {{$node[\"Get row(s) in sheet\"].json[\"Topic\"]}}  The future is evolving rapidly.  Here’s what you should know about {{$node[\"Get row(s) in sheet\"].json[\"Topic\"]}}:  ✔ Innovation is accelerating   ✔ Industries are transforming   ✔ Opportunities are expanding    Staying informed gives you an edge.  What are your thoughts on this?  #Innovation #Technology #Future #Leadership",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        0
+      ],
+      "id": "297d46bf-af43-4eab-948d-5b276a233080",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bVAlGPSFbJRDd4UoO5jeB8VZCMEZ_6hw97aDI_7hRUo",
+          "mode": "list",
+          "cachedResultName": "LinkedIn_Content_",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bVAlGPSFbJRDd4UoO5jeB8VZCMEZ_6hw97aDI_7hRUo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bVAlGPSFbJRDd4UoO5jeB8VZCMEZ_6hw97aDI_7hRUo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{$node[\"Get row(s) in sheet\"].json[\"ID\"]}}",
+            "Generated_Content": "={{$node[\"Edit Fields\"].json[\"linkedin_post\"]}}\n",
+            "Status": "Done"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Topic",
+              "displayName": "Topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Generated_Content",
+              "displayName": "Generated_Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Posted",
+              "displayName": "Posted",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        848,
+        0
+      ],
+      "id": "7fb9260c-1e92-4d0c-81e2-82bf9ac3b46e",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kpM7T8emokCXbxNq",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "lakshitmalhotra419@gmail.com",
+        "subject": "=LinkedIn Post Ready – {{$node[\"Get row(s) in sheet\"].json[\"Topic\"]}}",
+        "message": "=Hi,  Your scheduled LinkedIn post has been generated.  Topic: {{$node[\"Get row(s) in sheet\"].json[\"Topic\"]}}  Generated Post:  {{$node[\"Edit Fields\"].json[\"linkedin_post\"]}}  Regards, n8n Automation",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        0
+      ],
+      "id": "a4366dd4-e4f8-4849-a088-0e9018e82203",
+      "name": "Send a message",
+      "webhookId": "91af2b39-e495-45e9-b696-12a09708a95a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Z0Vp1psfm1t3Fxj9",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "7c12774d-036f-4fcc-8da7-10d07f9465cd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e758be9de2655e112823be63ca75c3c0abc1d3b89ee2865256cf5a8147bfe57d"
+  },
+  "id": "pXoeVW_XlqswPElnsNtdJ",
+  "tags": []
+}
